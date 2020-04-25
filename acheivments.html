@@ -1,0 +1,193 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+    <style>
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+  text-align: center;
+  padding: 8px;
+  width: 50%;
+}
+    th{
+        font-size: 50px;
+        font-family: 'Poppins';
+        background-color: #4CAF50;
+         color: white;
+    }
+.two{
+    color:#4CAF50;
+    background-color: #f5f5f5;
+}
+    td{
+        background-color: #4CAF50;
+        font-size: 25px;
+        font-family: 'Poppins';
+         color: white;
+    }
+    td:nth-child(odd){
+        background-color: #f5f5f5;
+        font-size: 25px;
+        font-family: 'Poppins';
+         color: #4CAF50;
+    }
+    .league-display{
+        font-size: 50px;
+        font-family: 'Poppins';
+         color: #4CAF50;
+    }
+    .minute-display{
+        font-size: 50px;
+        font-family: 'Poppins';
+         color: #4CAF50;
+    }
+    </style>
+    </head>
+    <body onload="getTime()">
+        <center>
+            <table>
+                <tr>
+                <th>
+                    League
+                </th>
+                <th class="two">
+                    Workout Time
+                </th>
+            </tr>
+                <tr>
+         <td>Bronze</td>
+         <td>
+             1 minute
+         </td>
+                </tr>
+                <tr>
+                    <td>
+                        Silver
+                    </td>
+                    <td>
+                        60 minutes
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Gold
+                    </td>
+                    <td>
+                        180 minutes
+                    </td>
+                </tr>
+                <tr>
+                    <td>Platinum</td>
+                    <td>360 minutes</td>
+                </tr>
+                <tr>
+                    <td>
+                        Diamond
+                    </td>
+                    <td>
+                        720 minutes
+                    </td>
+                </tr>
+                <tr>
+                    <td>Elite</td><td>1440 minutes</td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <div class="display">
+                <p class="minute-display" id="minute-display">
+
+                </p>
+                <p class="league-display" id="league-display"></p>
+            </div>
+        </center>
+        <script>
+                var level;
+                var workoutTime;
+                var league;
+             function getTime(){
+                var username = localStorage.getItem("step_fit_user_name_2277");
+                var database = firebase.database();
+                database.ref("/Users/"+username+"/total_workout_time").on("value",snapshot=>{
+                    workoutTime = snapshot.val();
+                });
+                setTimeout(getLevel,3000);
+                setTimeout(getLeague,3001);
+                setTimeout(displayResult,3002);
+            }
+            function getLevel(){
+                if(workoutTime === 0){
+                    level = 0;
+                }
+                if(workoutTime >= 1 && workoutTime <= 59){
+                    level = 1;
+                }
+                if(workoutTime >= 60 && workoutTime <= 179){
+                   level = 2;
+                }
+                if(workoutTime >= 180 && workoutTime <= 359){
+                    level = 3;
+                }
+                if(workoutTime >= 360 && workoutTime <= 719 ){
+                    level  = 4;
+                }
+                if(workoutTime >= 720 && workoutTime <= 1439){
+                    level = 5;
+                }
+                if(workoutTime >= 1440){
+                    level = 6;
+                }
+            }
+            
+            function getLeague(){
+                if(level === 0){
+                 league = "None";
+                }
+                else if(level === 1){
+                    league = "Bronze"
+                }
+                else if(level === 2){
+                    league = "Silver";
+                }
+                else if(level === 3){
+                    league === "Gold";
+                }
+                else if(level === 4){
+                    league = "Platinum";
+                }
+                else if(level === 5){
+                    league = "Diamond"
+                }
+                else if(level === 6){
+                    league = "Elite";
+                }
+            }
+            function displayResult(){
+                document.getElementById("minute-display").innerHTML = ("Your workout minutes: "+workoutTime);
+                document.getElementById("league-display").innerHTML = ("Your League: "+league);
+            }
+        </script>
+    </body>
+</html>

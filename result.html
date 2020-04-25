@@ -1,0 +1,303 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+    .pb-head-container{
+        background-color: red;
+    }
+</style>
+    </head>
+    <body>
+        <center>
+            <h1 class="heading">
+            You were fast as a bullet! Congratulations on completing your workout.
+                </h1>
+                <div class="pb-head-container">
+                    <h1 class="pb-head" id="pb-head"></h1>
+                </div>
+                <div class="insights-head-container">
+                    <h1 class="insights-head">
+                    Here are a few insights from your workout.
+                    </h1>
+                </div>
+                <div class="insights-container">
+                    <p class="total-time">Workout Duration: <span id="total-time"></span><span id="pb"></span></p>
+                    <p class="total-rounds">Total Rounds: <span id="total-rounds"></span><span id="pb-rounds"></span></p>
+                    <p class="average-time">Average Time taken per round: <span id="avg"></span></p>
+                </div>
+        </center>
+        <script>
+            var database = firebase.database();
+            var lastWorkout = "";
+            var lastWorkoutDate = "";
+            var details = [];
+            var workoutsInJson = [];
+            var activeUsername = window.localStorage.getItem("step_fit_user_name_2277");
+            var totalWorkoutTime = "";
+            var seperate = 0;
+            var roundArr = [];
+            var whole = 0;
+            var minTimeline = [];
+            var secTimeline = [];
+            var minuteTimeline = 0;
+            var minMin = 0;
+            var minSec = 0;
+            var index = 0;
+            var minimumSeconds = 0;
+            var minimumMinutes = 0;
+            var minTime = 0;
+            var minSecGlobal;
+            var minMinGlobal;
+            var historyMinutes;
+            var historySeconds;
+            var updatedHistoryMinutes;
+            var totalTimeOfWorkout;
+            var databaseData;
+            var databaseRounds;
+                var rhs;
+                var workoutTimeArray;
+                var usableStringMinutes;
+                var minutes;
+                var totalWorkoutMinutes;
+                var newVal;
+                var seconds;
+                var joined;
+                var newValSec;
+                //personal best
+                var personal;
+                var best;
+                var pb;
+                var minHist;
+                var pbStatus;
+                var personalSec;
+                var bestSec;
+                var sec;
+                var secHist;
+                var ussecond;
+                var rounds;
+                var sum = 0;
+                var avg;
+                var secSum = 0;
+                var secAvg;
+                var secondAverage;
+                var minuteAverage;
+                var fastestRound;
+                var ind;
+                var roundsPbstatus;
+                var roundsPb;
+                var mostRoundInAWorkout;
+                var totalWorkoutsDatabase;
+            async function getData(){
+                database.ref("/Users/"+activeUsername+"/workout_details/last_workout").on("value",snapshot=>{
+                    lastWorkout = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/workout_details/last_workout_date").on("value",snapshot=>{
+                    lastWorkoutDate = snapshot.val();
+                });
+            }
+
+            function getWorkout(){
+                database.ref("/Users/"+activeUsername+"/Workouts/"+lastWorkoutDate+"/"+lastWorkout+"/total_time").on("value",snapshot=>{
+                    totalWorkoutTime = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/Workouts/"+lastWorkoutDate+"/"+lastWorkout+"/min_timeline").on("value",snapshot=>{
+                    minTimeline = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/Workouts/"+lastWorkoutDate+"/"+lastWorkout+"/sec_timeline").on("value",snapshot=>{
+                    secTimeline = snapshot.val();
+                });
+
+                database.ref("/Users/"+activeUsername+"/workout_history_minutes").on("value",snapshot=>{
+                  minHist = snapshot.val();  
+                })
+                database.ref("/Users/"+activeUsername+"/workout_history_seconds").on("value",snapshot=>{
+                  secHist = snapshot.val();  
+                })
+                database.ref("/Users/"+activeUsername+"/total_rounds").on("value",snapshot=>{
+                    databaseRounds = snapshot.val();
+                })
+            }
+            
+            function processIt(){
+                minMin = Math.min(...minTimeline);
+               index = minTimeline.indexOf(minMin);
+                minSec = secTimeline[index];
+            database.ref("/Users/"+activeUsername+"/min_sec").on("value",snapshot=>{
+                minSecGlobal = snapshot.val();
+            });
+            database.ref("/Users/"+activeUsername+"/min_min").on("value",snapshot=>{
+                minMinGlobal = snapshot.val();
+            });
+                 minimumSeconds = minSec.toString();
+                minimumMinutes = minMin.toString();
+                minTime = minimumMinutes+","+minimumSeconds;
+               console.log(minTime);
+            }
+          async function updateDatabase(){
+                var updates = {
+                    min_min:minMin,
+                    min_sec:minSec
+                }
+                if(minMin < minMinGlobal){
+                    database.ref("/Users/"+activeUsername).update(
+                        updates
+                    )
+                }
+                database.ref("/Users/"+activeUsername+"/workout_history_minutes").on("value",snapshot=>{
+                    historyMinutes = snapshot.val();
+                });
+                
+                database.ref("/Users/"+activeUsername+"/workout_history_seconds").on("value",snapshot=>{
+                    historySeconds = snapshot.val();
+                });
+
+                database.ref("/Users/"+activeUsername+"/Workouts/"+lastWorkoutDate+"/"+lastWorkout+"/total_time").on("value",snapshot=>{
+                    totalTimeOfWorkout = snapshot.val();
+                });
+
+                database.ref("/Users/"+activeUsername+"/total_workout_time").on("value",snapshot=>{
+                    totalWorkoutMinutes = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/personal_best_minutes").on("value",snapshot=>{
+                    best = snapshot.val();
+                })
+
+                database.ref("/Users/"+activeUsername+"/personal_best_seconds").on("value",snapshot=>{
+                    bestSec = snapshot.val();
+                })
+
+                database.ref("/Users/"+activeUsername+"/personal_best_rounds").on("value",snapshot=>{
+                    roundsPb = snapshot.val();
+                })
+                database.ref("/Users/"+activeUsername+"/total_workouts").on("value",snapshot=>{
+                    totalWorkoutsDatabase = snapshot.val();
+                })
+                
+            }
+            function updateData(){
+                totalWorkoutsDatabase++;
+                databaseData = historyMinutes.toString();
+                minutes = totalTimeOfWorkout[0];
+                newVal = minutes+totalWorkoutMinutes;
+                rhs = totalTimeOfWorkout.toString();
+                workoutTimeArray = rhs.split(",");
+                ///to create an array
+                var minutesPlace = workoutTimeArray.length - 2;
+                usableStringMinutes = workoutTimeArray[minutesPlace];
+                console.log(usableStringMinutes);
+                updatedHistoryMinutes = databaseData+","+usableStringMinutes;
+                // Seconds
+               ussecond = totalTimeOfWorkout[1];
+                seconds = totalTimeOfWorkout[1].toString();
+                joined = historySeconds.toString();
+                newValSec = joined+","+seconds;
+                rounds = secTimeline.length;
+               // 
+               for( var i = 0; i < minTimeline.length; i++ ){
+                 sum += minTimeline[i],rounds; //don't forget to add the base
+                }
+
+                avg = sum/minTimeline.length;
+                minuteAverage = Math.round(avg)
+                for( var i = 0; i < secTimeline.length; i++ ){
+                 secSum += secTimeline[i],rounds; //don't forget to add the base
+                }
+
+                secAvg = secSum/secTimeline.length;
+                secondAverage = Math.round(secAvg);
+
+               if(minutes>best){
+                   pbStatus = 1;
+               }
+             else if(minutes === best){
+                        if(ussecond > bestSec){
+                            pbStatus = 1;
+                        }
+                        else{
+                            pbStatus = 0;
+                        }
+               }
+               else{
+                   pbStatus = 0;
+               }
+
+               if(rounds> roundsPb){
+                   roundsPbstatus = 1;
+               }
+            }
+            function checkpb(){
+                if(pbStatus === 1){
+                   document.getElementById("pb").innerHTML = (" Personal Best!");
+                   document.getElementById("pb-head").innerHTML = ("You Just Crushed records");
+                   database.ref("/Users/"+activeUsername).update({
+                        personal_best_minutes: minutes,
+                        personal_best_seconds: ussecond
+                    })
+               }
+               else{
+                document.getElementById("pb").innerHTML = ("");
+               }
+               if(roundsPbstatus === 1){
+                document.getElementById("pb-rounds").innerHTML = (" Personal Best!");
+                document.getElementById("pb-head").innerHTML = ("You Just Crushed records");
+                   database.ref("/Users/"+activeUsername).update({
+                        personal_best_rounds: rounds
+                    })
+               }
+            }
+            function updateUpdatedData(){
+                database.ref("/Users/"+activeUsername).update({
+                    total_workouts: totalWorkoutsDatabase
+                });
+                database.ref("/Users/"+activeUsername).update({
+                    workout_history_minutes: updatedHistoryMinutes
+                });
+                database.ref("/Users/"+activeUsername).update({
+                    workout_history_seconds: newValSec
+                })
+                database.ref("/Users/"+activeUsername).update({
+                    total_workout_time: newVal
+                })
+                database.ref("/Users/"+activeUsername+"/"+"Workouts"+"/"+lastWorkoutDate+"/"+lastWorkout).update({
+                    minute_average: minuteAverage,
+                    second_average: secondAverage
+                })
+                ////////////////////////////////////////////////////////////
+                database.ref("/Users/"+activeUsername).update({
+                    total_rounds: databaseRounds+rounds
+                })
+                document.getElementById("total-time").innerHTML = (minutes+" Minutes"+" "+seconds+" Seconds")
+                document.getElementById("total-rounds").innerHTML = (rounds)
+                document.getElementById("avg").innerHTML = (minuteAverage+" Minutes"+" "+secondAverage+" Seconds");
+            }
+            getData();
+            setTimeout(getWorkout, 3000);
+            setTimeout(processIt,7000);
+            setTimeout(updateDatabase,9000);
+            setTimeout(updateData,12000);
+            setTimeout(updateUpdatedData,15000);
+            setTimeout(checkpb,18000);
+        </script>
+    </body>
+</html>
+
+

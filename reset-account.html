@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+    </head>
+    <body>
+        <center>
+        <input type="text" id="username-input" placeholder="Enter your username">
+        <br>
+        <input type="password" id="username-password" placeholder="Enter your password">
+        <br>
+        <button id="button">
+            Reset Account
+        </button>
+        </center>
+        <script>
+            var inputUsername;
+            var inputPassword;
+            var correctUsername;
+            var correctPassword;
+            var database = firebase.database();
+            document.getElementById("button").addEventListener("click",(e)=>{
+                e.preventDefault();
+                inputUsername = document.getElementById("username-input").value;
+                inputPassword = document.getElementById("username-password").value;
+                correctUsername = localStorage.getItem("step_fit_user_name_2277");
+                if(correctUsername === inputUsername){
+                    database.ref("/Users/"+correctUsername+"/password").on("value",snapshot=>{
+                        correctPassword = snapshot.val();
+                    });
+                    setTimeout(checkPassword,3000);
+                }
+                else{
+                    alert("Incorrect Username");
+                }
+            });
+
+            function checkPassword(){
+                inputPassword = document.getElementById("username-password").value;
+                if(correctPassword === inputPassword){
+                    database.ref("/Users/"+correctUsername).set({
+                    password: inputPassword,
+                    min_sec: 0,
+                    min_min: 60,
+                    workout_history_minutes: 0,
+                    workout_history_seconds: 0,
+                    total_workout_time: 0
+                    });
+                    setTimeout(returnResult,3000);
+                }
+                else{
+                    alert("Invalid Password");
+                }
+            }
+            function returnResult(){
+                alert("Your account has been reset");
+                location.replace("home.html");
+            }
+
+        </script>
+    </body>
+</html>

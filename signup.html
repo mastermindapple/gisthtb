@@ -1,0 +1,167 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+    <style>
+        body{
+            margin: 0px;
+            padding: 0%;
+        }
+                        .background{
+                width: 100%;
+                height: 100%;
+                background-color: #0F1012;
+                background-size: 100% 100%;
+                 background-position: center;
+                }
+                #textbox{
+                    width: 1100px;
+                height: 700px;
+                background: url(homepagelogo.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+            transform: translateY(-200px);
+                }
+                .button{
+                    height: 70px;
+            width: 70px;
+            background-color: white;
+            text-align: center;
+            border-radius: 50%;
+            transition: 0.6s;
+            transform: translateY(500px) translateX(300px);
+                }
+                .button:hover{
+                    cursor: pointer;
+                    background-color: rgb(149,153,152);
+                }
+                .txt{
+                    color: #FF9400;
+                   font-size: 30px;
+                   transform: translateY(10px);
+                   font-family: 'Poppins';
+                   height: 40px;
+                }
+                #username{
+                    border: none;
+                    background-color: #D5D5D5;
+                    color:#FF9400;
+                    font-family: 'Poppins';
+                    transform: translateY(340px) translateX(420px);
+                    height: 50px;
+                   width: 300px;
+                font-size: 25px;
+                }
+                #password{
+                    border: none;
+                    background-color: #D5D5D5;
+                    color:#FF9400;
+                    font-family: 'Poppins';
+                    transform: translateY(425px) translateX(-100px);
+                    height: 50px;
+                   width: 300px;
+                font-size: 25px;
+                }
+                #password-confirm{
+                    border: none;
+                    background-color: #D5D5D5;
+                    color:#FF9400;
+                    font-family: 'Poppins';
+                    transform: translateY(505px) translateX(-650px);
+                    height: 50px;
+                   width: 300px;
+                font-size: 20px;
+                }
+                .sign{
+                    color: #B1B1B1;
+                    font-family: 'Poppins';
+                }
+                .up{
+                    font-family: 'Poppins';
+                    color:#FF9400;
+                }
+                .heading{
+                    color: #B1B1B1;
+                    font-family: 'Poppins';
+                }
+                .journey{
+                    color: #B1B1B1;
+                    font-family: 'Poppins';
+                    font-size:15px;
+                    transform: translateY(-25px);
+                }
+                .or{
+                    color:#B1B1B1;
+                    font-family: 'Poppins';
+                    font-size:15px;
+                    transform: translateY(-25px);
+                }
+                .login{
+                    color:#B1B1B1;
+                    font-family: 'Poppins';
+                    font-size:20px;
+                }
+                .login-container{
+                    height: 25px;
+                    width:100px;
+                    transform: translateY(-25px);
+                }
+                .login-container:hover{
+                    cursor: pointer;
+                }
+                .link{
+                    transform: translateX(40%);
+                }
+                
+                
+
+                
+    </style>
+    </head>
+    <body>
+        <center>
+            <div class="background">
+                <div class="heading-container">
+                    <h1 class="heading">
+                        <span class="sign">Sign</span><span class="up"> up</span>,
+                        <br>
+                    </h1>
+                    <h1 class="journey">
+                        to begin your journey
+                    </h1>
+                </div>
+            <div id="textbox">
+            <input type="text" id="username" placeholder="Choose a Username">
+            <input type="password" id="password" placeholder="Choose a Password">
+            <input type="password" id="password-confirm" placeholder="Confirm Your Passwords">
+            <div id="sign-up-btn" class="button">
+                <p class="txt">
+              GO!
+                </p>
+            </div>
+        </div>
+    </div>
+        </center>
+        <script src="functions.js"></script>
+    </body>
+</html>

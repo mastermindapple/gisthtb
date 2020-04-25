@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <style>
+            body{
+                padding: 0px;
+                margin: 0px;
+                background-color: #0F1012;
+
+            }
+            table {
+  border-collapse: collapse;
+  width: 100%;
+  height: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: 90px;
+  color: #FF9400;
+  font-family: 'Poppins';
+}
+tr{
+    background-color: #0F1012;
+}
+
+tr:hover {background-color:#1D1E20; cursor: pointer;}
+        </style>
+
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+    </head>
+    <body>
+        <table class="table">
+            <tr id="password-change">
+                <td>
+                Change Password
+                </td>
+            </tr> 
+            <tr id="reset">
+                <td>
+                    Reset Account
+                </td>
+            </tr>
+            <tr id="delete">
+                <td>
+                    Delete Account
+                </td>
+            </tr>
+        </table>
+        <script>
+            document.getElementById("password-change").addEventListener("click",(e)=>{
+                e.preventDefault();
+                location.replace("password-change.html");
+            })
+            document.getElementById("reset").addEventListener("click",(e)=>{
+                e.preventDefault();
+                location.replace("reset-account.html");
+            })
+            document.getElementById("delete").addEventListener("click",(e)=>{
+                e.preventDefault();
+                location.replace("remove-account.html")
+            });
+        </script>
+    </body>
+</html>
